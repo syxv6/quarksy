@@ -58,4 +58,4 @@ REST is easy peasy with this Hello World RESTEasy resource.
 
 The H2 DB console is available at ```http://localhost:8080/h2```.  
 
-Log in using jdbc:h2:mem:test with an empty username and password.  A Developers tasble is present with preloaded data.
+Log in using jdbc:h2:mem:test with an empty username and password.  A Developers table is present with preloaded data.

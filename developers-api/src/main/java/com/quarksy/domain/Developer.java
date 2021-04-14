@@ -1,28 +1,30 @@
 package com.quarksy.domain;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 @Entity
-public class Developer
+public class Developer extends PanacheEntityBase
 {
     @Id
-    private UUID id;
-    private String name;
-    private String team;
-//    private List<String> skills;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    public String id;
+    public String name;
+    public String team;
+//    public List<String> skills;
+    public LocalDateTime createdAt;
+    public LocalDateTime updatedAt;
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

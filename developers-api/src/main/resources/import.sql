@@ -1,1 +1,2 @@
-INSERT INTO Developer (id, name, team) VALUES (1, 'Foo', 'Boo');
+INSERT INTO Developer (id, name, team) VALUES ('982f5c0b-33c9-4d17-ba3c-d06c45f28ee1', 'Foo', 'Boo');
+INSERT INTO Developer (id, name, team) VALUES ('982f5c0b-33c9-4d17-ba3c-d06c45f28ee2', 'Foo2', 'Boo2');
