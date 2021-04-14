@@ -1,0 +1,1 @@
+INSERT INTO Developer (id, name, team) VALUES (1, 'Foo', 'Boo');

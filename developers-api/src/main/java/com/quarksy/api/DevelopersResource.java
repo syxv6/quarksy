@@ -1,4 +1,6 @@
-package com.quarksy;
+package com.quarksy.api;
+
+import com.quarksy.domain.DevelopersService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;

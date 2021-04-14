@@ -1,11 +1,16 @@
-package com.quarksy;
+package com.quarksy.domain;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.ws.rs.core.Response;
 
 @ApplicationScoped
 public class DevelopersService
 {
+
+    @Inject
+    EntityManager em;
 
     public Response getDevById(String id)
     {
@@ -19,7 +24,8 @@ public class DevelopersService
 
     public Response addDev(String dev)
     {
-        return Response.ok("Add dev").build();
+        em.persist(dev);
+        return Response.ok("Dev added").build();
     }
 
     public Response updateDevById(String id)
