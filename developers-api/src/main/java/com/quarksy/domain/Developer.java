@@ -1,14 +1,14 @@
 package com.quarksy.domain;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
+@lombok.Data
 @Entity
 public class Developer extends PanacheEntityBase
 {
@@ -59,6 +59,5 @@ public class Developer extends PanacheEntityBase
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
 
 }
