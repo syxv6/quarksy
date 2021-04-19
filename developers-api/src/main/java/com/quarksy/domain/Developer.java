@@ -1,12 +1,12 @@
 package com.quarksy.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.time.LocalDateTime;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+
+import javax.persistence.*;
+import java.time.ZonedDateTime;
+import java.util.List;
 
 @lombok.Data
 @Entity
@@ -16,48 +16,19 @@ public class Developer extends PanacheEntityBase
     public String id;
     public String name;
     public String team;
-//    public List<String> skills;
-    public LocalDateTime createdAt;
-    public LocalDateTime updatedAt;
 
-    public String getId() {
-        return id;
-    }
+//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "developer_id")
+//    public List<Skill> skills;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    // See guide at https://quarkus.io/guides/hibernate-search-orm-elasticsearch
+    @OneToMany(mappedBy = "skill", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    public List<Skill> skills;
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssXXX")
+    public ZonedDateTime createdAt;
 
-    public String getTeam() {
-        return team;
-    }
-
-    public void setTeam(String team) {
-        this.team = team;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssXXX")
+    public ZonedDateTime updatedAt;
 }
