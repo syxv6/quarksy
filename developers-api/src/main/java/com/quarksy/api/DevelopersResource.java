@@ -2,6 +2,8 @@ package com.quarksy.api;
 
 import com.quarksy.domain.Developer;
 import com.quarksy.domain.DevelopersService;
+import com.quarksy.domain.Skill;
+import io.quarkus.panache.common.Sort;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
