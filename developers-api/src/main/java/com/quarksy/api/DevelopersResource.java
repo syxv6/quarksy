@@ -4,6 +4,7 @@ import com.quarksy.domain.Developer;
 import com.quarksy.domain.DevelopersService;
 import com.quarksy.domain.Skill;
 import io.quarkus.panache.common.Sort;
+import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -19,52 +20,49 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 public class DevelopersResource
 {
+    @Inject
+    DevelopersService service;
+
+    private static final Logger logger = Logger.getLogger(DevelopersResource.class.getName());
 
     @POST
     @Transactional
-    public Response create(Developer developer) {
-        if (developer.id == null) {
-            throw new WebApplicationException("Id was invalidly set on request.", 422);
-        }
-        developer.persist();
-        return Response.ok(developer).status(201).build();
+    public Response create(Developer developer)
+    {
+        logger.info("POST Developer");
+        return service.addDev(developer);
     }
 
     @GET
     public List<Developer> getAllDevs()
     {
-        return Developer.listAll(Sort.by("id"));
+        logger.info("Get All Developers");
+        return service.getAllDevs();
     }
-
+ 
     @GET
     @Path("{id}")
-    public Developer getSingle(@org.jboss.resteasy.annotations.jaxrs.PathParam String id) {
-        Developer entity = Developer.findById(id);
-        if (entity == null) {
-            throw new WebApplicationException("Developer with id of " + id + " does not exist.", 404);
-        }
-        return entity;
+    public Developer getDevById(@PathParam("id") String id)
+    {
+        logger.info("Get Developer By ID");
+        return service.getDevById(id);
     }
 
-//    @PATCH
-//    @Path("/{developerID}")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public Response updateDevById(@PathParam("developerID") String id)
-//    {
-//        return service.updateDevById(id);
-//    }
+    @PATCH
+    @Path("/{id}")
+    public Developer updateDevById(@PathParam("id") String id, Developer dev)
+    {
+        logger.info("Update Developer By ID");
+        return service.updateDevById(id, dev);
+    }
 
     @DELETE
     @Path("{id}")
     @Transactional
-    public Response delete(@org.jboss.resteasy.annotations.jaxrs.PathParam String id) {
-        Developer entity = Developer.findById(id);
-        if (entity == null) {
-            throw new WebApplicationException("Developer with id of " + id + " does not exist.", 404);
-        }
-        entity.delete();
-        return Response.status(204).build();
+    public Response delete(@PathParam("id") String id)
+    {
+        logger.info("Delete Developer By ID");
+        return service.removeDevById(id);
     }
-
 
 }
