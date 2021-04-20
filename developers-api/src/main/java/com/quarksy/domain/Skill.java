@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @lombok.Data
 @Entity
-public class Skill extends PanacheEntityBase {
+public class Skill extends PanacheEntity {
 
     @ManyToOne
     @JsonIgnore
