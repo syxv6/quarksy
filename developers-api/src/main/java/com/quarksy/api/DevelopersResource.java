@@ -39,11 +39,6 @@ public class DevelopersResource
                                       @QueryParam("sort") String sort)
     {
         logger.info("Get All Developers");
-        logger.error(name);
-        logger.error(team);
-        logger.error(page);
-        logger.error(pageSize);
-        logger.error(sort);
         return service.getAllDevs(name, team, page, pageSize, sort);
     }
 
