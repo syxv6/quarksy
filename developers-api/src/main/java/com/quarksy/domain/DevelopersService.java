@@ -10,6 +10,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+
+
 @ApplicationScoped
 public class DevelopersService
 {
@@ -57,17 +60,18 @@ public class DevelopersService
                         list.sort(Comparator.comparing(Developer::getUpdatedAt));
                         break;
                     default:
-                        throw new WebApplicationException("Field name " + tokens[0] + " for sorting is invalid.");
+                        throw new WebApplicationException(Response.status(BAD_REQUEST)
+                                .entity("Field name " + tokens[0] + " for sorting is invalid.").build());
                 }
                 if (tokens[1].equals("desc"))
                     Collections.reverse(list);
                 else if (!tokens[1].equals("asc"))
-                    throw new WebApplicationException("Sorting order " + tokens[1] + " is invalid.");
+                    throw new WebApplicationException(Response.status(BAD_REQUEST)
+                            .entity("Sorting order " + tokens[1] + " is invalid.").build());
             }
         }
         int endIndex = Math.min(page + (pageSize == 0 ? 10 : pageSize), list.size());
-        list = list.subList(page, endIndex);
-        return list;
+        return list.subList(page, endIndex);
     }
 
     public Response addDev(Developer dev)
