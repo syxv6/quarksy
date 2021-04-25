@@ -2,8 +2,6 @@ package com.quarksy.api;
 
 import com.quarksy.domain.Developer;
 import com.quarksy.domain.DevelopersService;
-import com.quarksy.domain.Skill;
-import io.quarkus.panache.common.Sort;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -13,6 +11,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 
 @Path("/api/v1/developers")
 @ApplicationScoped
@@ -30,22 +30,34 @@ public class DevelopersResource
     public Response create(Developer developer)
     {
         logger.info("POST Developer");
-        return service.addDev(developer);
+        try {
+            return service.addDev(developer);
+        } catch (Exception e) {
+            throw new WebApplicationException(Response.status(BAD_REQUEST).entity("An error has occurred.").build());
+        }
     }
 
     @GET
     public List<Developer> getAllDevs()
     {
         logger.info("Get All Developers");
-        return service.getAllDevs();
+        try {
+            return service.getAllDevs();
+        } catch (Exception e) {
+            throw new WebApplicationException(Response.status(BAD_REQUEST).entity("An error has occurred.").build());
+        }
     }
- 
+
     @GET
     @Path("{id}")
     public Developer getDevById(@PathParam("id") String id)
     {
         logger.info("Get Developer By ID");
-        return service.getDevById(id);
+        try {
+            return service.getDevById(id);
+        } catch (Exception e) {
+            throw new WebApplicationException(Response.status(BAD_REQUEST).entity("An error has occurred.").build());
+        }
     }
 
     @PATCH
@@ -53,7 +65,11 @@ public class DevelopersResource
     public Developer updateDevById(@PathParam("id") String id, Developer dev)
     {
         logger.info("Update Developer By ID");
-        return service.updateDevById(id, dev);
+        try {
+            return service.updateDevById(id, dev);
+        } catch (Exception e) {
+            throw new WebApplicationException(Response.status(BAD_REQUEST).entity("An error has occurred.").build());
+        }
     }
 
     @DELETE
@@ -62,7 +78,11 @@ public class DevelopersResource
     public Response delete(@PathParam("id") String id)
     {
         logger.info("Delete Developer By ID");
-        return service.removeDevById(id);
+        try {
+            return service.removeDevById(id);
+        } catch (Exception e) {
+            throw new WebApplicationException(Response.status(BAD_REQUEST).entity("An error has occurred.").build());
+        }
     }
 
 }
