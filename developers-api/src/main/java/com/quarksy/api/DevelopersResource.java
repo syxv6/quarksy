@@ -1,6 +1,7 @@
 package com.quarksy.api;
 
 import com.quarksy.domain.Developer;
+import com.quarksy.domain.Developers;
 import com.quarksy.domain.DevelopersService;
 import org.jboss.logging.Logger;
 
@@ -10,7 +11,6 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 @Path("/api/v1/developers")
 @ApplicationScoped
@@ -32,14 +32,18 @@ public class DevelopersResource
     }
 
     @GET
-    public List<Developer> getAllDevs(@QueryParam("name") String name,
-                                      @QueryParam("team") String team,
-                                      @QueryParam("page") int page,
-                                      @QueryParam("pageSize") int pageSize,
-                                      @QueryParam("sort") String sort)
+    public Developers getAllDevs(@QueryParam("name") String name,
+                                 @QueryParam("team") String team,
+                                 @QueryParam("page") int page,
+                                 @QueryParam("pageSize") int pageSize,
+                                 @QueryParam("sort") String sort)
     {
         logger.info("Get All Developers");
-        return service.getAllDevs(name, team, page, pageSize, sort);
+
+        Developers developers = new Developers();
+        developers.setItems(service.getAllDevs(name, team, page, pageSize, sort));
+
+        return developers;
     }
 
     @GET
