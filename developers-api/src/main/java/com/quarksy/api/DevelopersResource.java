@@ -2,8 +2,6 @@ package com.quarksy.api;
 
 import com.quarksy.domain.Developer;
 import com.quarksy.domain.DevelopersService;
-import com.quarksy.domain.Skill;
-import io.quarkus.panache.common.Sort;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -34,12 +32,16 @@ public class DevelopersResource
     }
 
     @GET
-    public List<Developer> getAllDevs()
+    public List<Developer> getAllDevs(@QueryParam("name") String name,
+                                      @QueryParam("team") String team,
+                                      @QueryParam("page") int page,
+                                      @QueryParam("pageSize") int pageSize,
+                                      @QueryParam("sort") String sort)
     {
         logger.info("Get All Developers");
-        return service.getAllDevs();
+        return service.getAllDevs(name, team, page, pageSize, sort);
     }
- 
+
     @GET
     @Path("{id}")
     public Developer getDevById(@PathParam("id") String id)
