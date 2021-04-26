@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -79,6 +80,15 @@ public class DevelopersService
         if (dev.id == null) {
             throw new WebApplicationException("Id was invalidly set on request.", 422);
         }
+        System.out.println(dev.toString());
+        ArrayList<Skill> skillList = new ArrayList<>();
+
+        for (String skillName : dev.getSkills()){
+            Skill skill = new Skill(skillName);
+            skill.setDeveloper(dev);
+            skillList.add(skill);
+        }
+        dev.skills = skillList;
         dev.persist();
         return Response.ok(dev).status(201).build();
     }
