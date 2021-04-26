@@ -11,7 +11,6 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 @Path("/api/v1/developers")
 @ApplicationScoped
@@ -42,7 +41,7 @@ public class DevelopersResource
         logger.info("Get All Developers");
 
         Developers developers = new Developers();
-        developers.setDevelopers(service.getAllDevs(name, team, page, pageSize, sort));
+        developers.setItems(service.getAllDevs(name, team, page, pageSize, sort));
 
         return developers;
     }

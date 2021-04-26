@@ -5,7 +5,7 @@ import java.util.List;
 public class Developers {
 
     boolean hasNext;
-    List<Developer> developers;
+    List<Developer> items;
 
     public boolean isHasNext() {
         return hasNext;
@@ -15,11 +15,11 @@ public class Developers {
         this.hasNext = hasNext;
     }
 
-    public List<Developer> getDevelopers() {
-        return developers;
+    public List<Developer> getItems() {
+        return items;
     }
 
-    public void setDevelopers(List<Developer> developers) {
-        this.developers = developers;
+    public void setItems(List<Developer> items) {
+        this.items = items;
     }
 }
