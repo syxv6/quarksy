@@ -5,10 +5,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
@@ -31,7 +28,7 @@ public class DevelopersService
     }
 
 
-    public List<Developer> getAllDevs(String name, String team, int page, int pageSize, String sort)
+    public HashMap<Object, Object> getAllDevs(String name, String team, int page, int pageSize, String sort)
     {
         List<Developer> list = Developer.listAll();
         if (name != null) {
@@ -72,7 +69,15 @@ public class DevelopersService
             }
         }
         int endIndex = Math.min(page + (pageSize == 0 ? 10 : pageSize), list.size());
-        return list.subList(page, endIndex);
+
+        HashMap<Object, Object> getAllDevsMap = new HashMap<>();
+
+        getAllDevsMap.put("devList", list.subList(page, endIndex));
+        System.out.println("endIndex = " + endIndex);
+        System.out.println("size = " + endIndex);
+        getAllDevsMap.put("hasNext", endIndex < list.size() ? true : false);
+
+        return getAllDevsMap;
     }
 
     public Response addDev(Developer dev)
