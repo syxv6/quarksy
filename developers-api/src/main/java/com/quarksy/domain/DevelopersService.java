@@ -3,6 +3,7 @@ package com.quarksy.domain;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -93,6 +94,7 @@ public class DevelopersService
         return Response.ok(dev).status(201).build();
     }
 
+    @Transactional
     public Developer updateDevById(String id, Developer devNew)
     {
         if (devNew.name == null) {
@@ -104,10 +106,34 @@ public class DevelopersService
             throw new WebApplicationException("Developer with id of " + id + " does not exist.", 404);
         }
 
-        dev.name = devNew.name;
-        dev.team = devNew.team;
+        if (devNew.getName() != null) {
+            dev.setName(devNew.name);
+        }
+        if (devNew.getTeam() != null) {
+            dev.setTeam(devNew.team);
+        }
+        if (devNew.getCreatedAt() != null) {
+            dev.setCreatedAt(devNew.createdAt);
+        }
+        if (devNew.getUpdatedAt() != null) {
+            dev.setUpdatedAt(devNew.updatedAt);
+        }
 
-        return dev;
+        //Update Skills
+        if (devNew.getSkills() != null) {
+            Skill.delete("developer_id = ?1", dev.getId());
+            ArrayList<Skill> skillList = new ArrayList<>();
+
+            for (String skillName : devNew.getSkills()){
+                Skill skill = new Skill(skillName);
+                skill.setDeveloper(dev);
+                dev.skills.add(skill);
+                skill.persist();
+                System.out.println(dev.toString());
+            }
+        }
+
+        return devNew;
     }
 
     public Response removeDevById(String id)
