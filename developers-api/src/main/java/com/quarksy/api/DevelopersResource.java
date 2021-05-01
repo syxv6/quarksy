@@ -3,6 +3,7 @@ package com.quarksy.api;
 import com.quarksy.domain.Developer;
 import com.quarksy.domain.Developers;
 import com.quarksy.domain.DevelopersService;
+import com.quarksy.error.ErrorEntity;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -29,7 +30,13 @@ public class DevelopersResource
     public Response create(Developer developer)
     {
         logger.info("POST Developer");
-        return service.addDev(developer);
+        try {
+            return service.addDev(developer);
+        } catch (WebApplicationException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new WebApplicationException(Response.status(500).entity(new ErrorEntity()).build());
+        }
     }
 
     @GET
@@ -41,12 +48,18 @@ public class DevelopersResource
     {
         logger.info("Get All Developers");
 
-        Developers developers = new Developers();
-        var getAllDevsMap = service.getAllDevs(name, team, page, pageSize, sort);
-        developers.setHasNext((Boolean)getAllDevsMap.get("hasNext"));
-        developers.setItems((List<Developer>)getAllDevsMap.get("devList"));
+        try {
+            Developers developers = new Developers();
+            var getAllDevsMap = service.getAllDevs(name, team, page, pageSize, sort);
+            developers.setHasNext((Boolean) getAllDevsMap.get("hasNext"));
+            developers.setItems((List<Developer>) getAllDevsMap.get("devList"));
 
-        return developers;
+            return developers;
+        } catch (WebApplicationException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new WebApplicationException(Response.status(500).entity(new ErrorEntity()).build());
+        }
     }
 
     @GET
@@ -54,7 +67,14 @@ public class DevelopersResource
     public Developer getDevById(@PathParam("id") String id)
     {
         logger.info("Get Developer By ID");
-        return service.getDevById(id);
+
+        try {
+            return service.getDevById(id);
+        } catch (WebApplicationException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new WebApplicationException(Response.status(500).entity(new ErrorEntity()).build());
+        }
     }
 
     @PATCH
@@ -62,7 +82,14 @@ public class DevelopersResource
     public Developer updateDevById(@PathParam("id") String id, Developer dev)
     {
         logger.info("Update Developer By ID");
-        return service.updateDevById(id, dev);
+
+        try {
+            return service.updateDevById(id, dev);
+        } catch (WebApplicationException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new WebApplicationException(Response.status(500).entity(new ErrorEntity()).build());
+        }
     }
 
     @DELETE
@@ -71,7 +98,14 @@ public class DevelopersResource
     public Response delete(@PathParam("id") String id)
     {
         logger.info("Delete Developer By ID");
-        return service.removeDevById(id);
+
+        try {
+            return service.removeDevById(id);
+        } catch (WebApplicationException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new WebApplicationException(Response.status(500).entity(new ErrorEntity()).build());
+        }
     }
 
 }
