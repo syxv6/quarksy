@@ -1,5 +1,7 @@
 package com.quarksy.domain;
 
+import com.quarksy.error.ErrorEntity;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -8,8 +10,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 
 
 @ApplicationScoped
@@ -23,7 +23,8 @@ public class DevelopersService
     {
         Developer dev = Developer.findById(id);
         if (dev == null) {
-            throw new WebApplicationException("Developer with id of " + id + " does not exist.", 404);
+            throw new WebApplicationException(Response.status(404).entity(
+                    new ErrorEntity(404, "Developer with id of " + id + " does not exist.")).build());
         }
         return dev;
     }
@@ -59,14 +60,14 @@ public class DevelopersService
                         list.sort(Comparator.comparing(Developer::getUpdatedAt));
                         break;
                     default:
-                        throw new WebApplicationException(Response.status(BAD_REQUEST)
-                                .entity("Field name " + tokens[0] + " for sorting is invalid.").build());
+                        throw new WebApplicationException(Response.status(400).entity(
+                                new ErrorEntity(400, "Field name " + tokens[0] + " for sorting is invalid.")).build());
                 }
                 if (tokens[1].equals("desc"))
                     Collections.reverse(list);
                 else if (!tokens[1].equals("asc"))
-                    throw new WebApplicationException(Response.status(BAD_REQUEST)
-                            .entity("Sorting order " + tokens[1] + " is invalid.").build());
+                    throw new WebApplicationException(Response.status(400).entity(
+                            new ErrorEntity(400, "Sorting order " + tokens[1] + " is invalid.")).build());
             }
         }
         int endIndex = Math.min(page + (pageSize == 0 ? 10 : pageSize), list.size());
@@ -74,9 +75,7 @@ public class DevelopersService
         HashMap<Object, Object> getAllDevsMap = new HashMap<>();
 
         getAllDevsMap.put("devList", list.subList(page, endIndex));
-        System.out.println("endIndex = " + endIndex);
-        System.out.println("size = " + endIndex);
-        getAllDevsMap.put("hasNext", endIndex < list.size() ? true : false);
+        getAllDevsMap.put("hasNext", endIndex < list.size());
 
         return getAllDevsMap;
     }
@@ -84,12 +83,13 @@ public class DevelopersService
     public Response addDev(Developer dev)
     {
         if (dev.id == null) {
-            throw new WebApplicationException("Id was invalidly set on request.", 422);
+            throw new WebApplicationException(Response.status(422).entity(
+                    new ErrorEntity(422, "Id was invalidly set on request.")).build());
         }
         System.out.println(dev.toString());
         ArrayList<Skill> skillList = new ArrayList<>();
 
-        for (String skillName : dev.getSkills()){
+        for (String skillName : dev.getSkills()) {
             Skill skill = new Skill(skillName);
             skill.setDeveloper(dev);
             skillList.add(skill);
@@ -103,12 +103,14 @@ public class DevelopersService
     public Developer updateDevById(String id, Developer devNew)
     {
         if (devNew.name == null) {
-            throw new WebApplicationException("Developer Name was not set on request.", 422);
+            throw new WebApplicationException(Response.status(422).entity(
+                    new ErrorEntity(422, "Developer Name was not set on request.")).build());
         }
 
         Developer dev = Developer.findById(id);
         if (dev == null) {
-            throw new WebApplicationException("Developer with id of " + id + " does not exist.", 404);
+            throw new WebApplicationException(Response.status(404).entity(
+                    new ErrorEntity(404, "Developer with id of " + id + " does not exist.")).build());
         }
 
         if (devNew.getName() != null) {
@@ -129,7 +131,7 @@ public class DevelopersService
             Skill.delete("developer_id = ?1", dev.getId());
             ArrayList<Skill> skillList = new ArrayList<>();
 
-            for (String skillName : devNew.getSkills()){
+            for (String skillName : devNew.getSkills()) {
                 Skill skill = new Skill(skillName);
                 skill.setDeveloper(dev);
                 dev.skills.add(skill);
@@ -145,7 +147,8 @@ public class DevelopersService
     {
         Developer dev = Developer.findById(id);
         if (dev == null) {
-            throw new WebApplicationException("Developer with id of " + id + " does not exist.", 404);
+            throw new WebApplicationException(Response.status(404).entity(
+                    new ErrorEntity(404, "Developer with id of " + id + " does not exist.")).build());
         }
         dev.delete();
         return Response.status(204).build();
