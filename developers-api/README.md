@@ -2,7 +2,7 @@
 
 This project implements the Developer Track API shoot-out project using Quarkus, the Supersonic Subatomic Java Framework.  If you want to learn more about Quarkus, please visit its website: https://quarkus.io/.
 
-The app implements a REST api in accordance with the specification provided at: https://hub.deloittedigital.com.au/wiki/display/PEDEV/2021-04+Forum%3A+API+Shootout+Redux.
+The app implements a REST api in accordance with the specification set out in the api-definition.yaml file.
 
 ## Running the application in dev mode
 
